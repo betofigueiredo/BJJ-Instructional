@@ -11,7 +11,7 @@ import (
 
 const (
 	// views
-	FINDIND_RESULTS       = "FINDIND_RESULTS"
+	LOADING               = "LOADING"
 	RESULT                = "RESULT"
 	CHOOSE_ATACK_TYPE     = "CHOOSE_ATACK_TYPE"
 	CHOOSE_ATACK          = "CHOOSE_ATACK"
@@ -141,7 +141,7 @@ var (
 )
 
 var VIEWS = map[string]string{
-	FINDIND_RESULTS:       FINDIND_RESULTS,
+	LOADING:               LOADING,
 	RESULT:                RESULT,
 	CHOOSE_ATACK_TYPE:     CHOOSE_ATACK_TYPE,
 	CHOOSE_ATACK:          CHOOSE_ATACK,
@@ -163,7 +163,7 @@ type model struct {
 
 func main() {
 	initialModel := model{
-		FINDIND_RESULTS,
+		CHOOSE_ATACK_TYPE,
 		Content{},
 		Content{},
 		-1,
@@ -183,6 +183,13 @@ func (m model) Init() tea.Cmd {
 	return nil
 }
 
+func forceUpdate(msg tea.Msg, m model) tea.Cmd {
+	return func() tea.Msg {
+		time.Sleep(800 * time.Millisecond)
+		return msg
+	}
+}
+
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	// Make sure these keys always quit
 	if msg, ok := msg.(tea.KeyMsg); ok {
@@ -193,8 +200,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	}
 
 	switch m.CurrentView {
-	case VIEWS[FINDIND_RESULTS]:
-		return updateFindingResults(msg, m)
+	case VIEWS[LOADING]:
+		m.CurrentView = VIEWS[RESULT]
+		return m, nil
 	case VIEWS[CHOOSE_ATACK_TYPE]:
 		return updateChoseAtackType(msg, m)
 	case VIEWS[CHOOSE_ATACK]:
@@ -209,27 +217,19 @@ func (m model) View() string {
 	var s string
 
 	switch m.CurrentView {
-	case VIEWS[FINDIND_RESULTS]:
-		s = findingResultsView(m)
-		return mainStyle.Render("\n" + s + "\n\n")
-	case VIEWS[RESULT]:
-		s = resultView(m)
-		return mainStyle.Render("\n" + s + "\n\n")
+	case VIEWS[LOADING]:
+		s = "Encontrando resultados..."
 	case VIEWS[CHOOSE_ATACK_TYPE]:
 		s = choseAtackTypeView(m)
-		return mainStyle.Render("\n" + s + "\n\n")
 	case VIEWS[CHOOSE_ATACK]:
 		s = choseAtackView(m)
-		return mainStyle.Render("\n" + s + "\n\n")
 	default:
 		s = resultView(m)
-		return mainStyle.Render("\n" + s + "\n\n")
 	}
+	return mainStyle.Render("\n" + s + "\n\n")
 }
 
-// ANCHOR: Sub-update functions
-
-func updateFindingResults(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
+func findResults(m model) model {
 	atacks := []Content{}
 	defenses := []Content{}
 
@@ -258,11 +258,10 @@ func updateFindingResults(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
 	m.AtackPick = atackPick
 	m.DefensePick = defensePick
 
-	time.Sleep(800 * time.Millisecond)
-
-	m.CurrentView = VIEWS[CHOOSE_ATACK_TYPE]
-	return m, nil
+	return m
 }
+
+// ANCHOR: Sub-update functions
 
 func updateChoseAtackType(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
@@ -305,8 +304,9 @@ func updateChoseAtack(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
 				m.Atack = 0
 			}
 		case "enter":
-			m.CurrentView = VIEWS[RESULT]
-			return m, nil
+			m = findResults(m)
+			m.CurrentView = VIEWS[LOADING]
+			return m, forceUpdate(msg, m)
 		}
 	}
 
@@ -314,11 +314,6 @@ func updateChoseAtack(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
 }
 
 // ANCHOR: Sub-views
-
-func findingResultsView(m model) string {
-	s := "" + "\n\n" + "Encontrando resultados..."
-	return fmt.Sprint(s)
-}
 
 func resultView(m model) string {
 	const content = `
