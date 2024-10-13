@@ -149,6 +149,18 @@ var VIEWS = map[string]string{
 	CHOOSE_DEFENSE:        CHOOSE_DEFENSE,
 }
 
+type model struct {
+	CurrentView string
+	AtackPick   Content
+	DefensePick Content
+	AtackType   int
+	Atack       int
+	ChosenAtack string
+	Choice      int
+	Chosen      bool
+	Loaded      bool
+}
+
 func main() {
 	initialModel := model{
 		FINDIND_RESULTS,
@@ -167,18 +179,6 @@ func main() {
 	}
 }
 
-type model struct {
-	CurrentView string
-	AtackPick   Content
-	DefensePick Content
-	AtackType   int
-	Atack       int
-	ChosenAtack string
-	Choice      int
-	Chosen      bool
-	Loaded      bool
-}
-
 func (m model) Init() tea.Cmd {
 	return nil
 }
@@ -194,9 +194,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch m.CurrentView {
 	case VIEWS[FINDIND_RESULTS]:
-		time.Sleep(400 * time.Millisecond)
-		m.CurrentView = VIEWS[CHOOSE_ATACK_TYPE]
-		return m, nil
+		return updateFindingResults(msg, m)
 	case VIEWS[CHOOSE_ATACK_TYPE]:
 		return updateChoseAtackType(msg, m)
 	case VIEWS[CHOOSE_ATACK]:
@@ -212,8 +210,7 @@ func (m model) View() string {
 
 	switch m.CurrentView {
 	case VIEWS[FINDIND_RESULTS]:
-		label := "Encontrando resultados..."
-		s = "" + "\n\n" + label
+		s = findingResultsView(m)
 		return mainStyle.Render("\n" + s + "\n\n")
 	case VIEWS[RESULT]:
 		s = resultView(m)
@@ -231,6 +228,41 @@ func (m model) View() string {
 }
 
 // ANCHOR: Sub-update functions
+
+func updateFindingResults(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
+	atacks := []Content{}
+	defenses := []Content{}
+
+	for _, row := range database {
+		isAtack := row.technique == ATACK
+		if isAtack {
+			atacks = append(atacks, row)
+		}
+
+		isDefense := row.technique == DEFENSE
+		if isDefense {
+			defenses = append(defenses, row)
+		}
+	}
+
+	atackPick := Content{}
+	if len(atacks) > 0 {
+		atackPick = atacks[rand.Intn(len(atacks))]
+	}
+
+	defensePick := Content{}
+	if len(defenses) > 0 {
+		defensePick = defenses[rand.Intn(len(defenses))]
+	}
+
+	m.AtackPick = atackPick
+	m.DefensePick = defensePick
+
+	time.Sleep(800 * time.Millisecond)
+
+	m.CurrentView = VIEWS[CHOOSE_ATACK_TYPE]
+	return m, nil
+}
 
 func updateChoseAtackType(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
@@ -284,60 +316,11 @@ func updateChoseAtack(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
 // ANCHOR: Sub-views
 
 func findingResultsView(m model) string {
-	atacks := []Content{}
-	defenses := []Content{}
-
-	for _, row := range database {
-		isAtack := row.technique == ATACK
-		if isAtack {
-			atacks = append(atacks, row)
-		}
-
-		isDefense := row.technique == DEFENSE
-		if isDefense {
-			defenses = append(defenses, row)
-		}
-	}
-
-	atackPick := Content{}
-	if len(atacks) > 0 {
-		atackPick = atacks[rand.Intn(len(atacks))]
-	}
-
-	defensePick := Content{}
-	if len(defenses) > 0 {
-		defensePick = defenses[rand.Intn(len(defenses))]
-	}
-
-	return fmt.Sprint("")
+	s := "" + "\n\n" + "Encontrando resultados..."
+	return fmt.Sprint(s)
 }
 
 func resultView(m model) string {
-	atacks := []Content{}
-	defenses := []Content{}
-
-	for _, row := range database {
-		isAtack := row.technique == ATACK
-		if isAtack {
-			atacks = append(atacks, row)
-		}
-
-		isDefense := row.technique == DEFENSE
-		if isDefense {
-			defenses = append(defenses, row)
-		}
-	}
-
-	atackPick := Content{}
-	if len(atacks) > 0 {
-		atackPick = atacks[rand.Intn(len(atacks))]
-	}
-
-	defensePick := Content{}
-	if len(defenses) > 0 {
-		defensePick = defenses[rand.Intn(len(defenses))]
-	}
-
 	const content = `
 %v
 
@@ -355,11 +338,11 @@ Vídeo: %v
 		content,
 		title.Render("Resultado:"),
 		subtitle.Render("# Ataque"),
-		atackPick.name,
-		atackPick.url,
+		m.AtackPick.name,
+		m.AtackPick.url,
 		subtitle.Render("# Defesa"),
-		defensePick.name,
-		defensePick.url,
+		m.DefensePick.name,
+		m.DefensePick.url,
 	)
 
 	return fmt.Sprint(filledString)
