@@ -21,7 +21,9 @@ const (
 	// default
 	ATACK        = "ATACK"
 	DEFENSE      = "DEFENSE"
+	SUBMISSION   = "SUBMISSION"
 	SUBMISSIONS  = "SUBMISSIONS"
+	PROGRESSION  = "PROGRESSION"
 	PROGRESSIONS = "PROGRESSIONS"
 	POSITIONS    = "POSITIONS"
 
@@ -100,7 +102,6 @@ var DEFENSES = map[string][]Option{
 type Content struct {
 	name       string
 	url        string
-	technique  string
 	categories map[string]bool
 }
 
@@ -127,7 +128,6 @@ var (
 			Background(lipgloss.Color("#ec96a7")).
 			PaddingRight(1).
 			PaddingLeft(1)
-	subtitle      = lipgloss.NewStyle().Foreground(lipgloss.Color("241"))
 	subtleStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("241"))
 	checkboxStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("212"))
 	dotStyle      = lipgloss.NewStyle().Foreground(lipgloss.Color("236")).Render(dotChar)
@@ -218,12 +218,25 @@ func findResults(m model) model {
 	defenses := []Content{}
 
 	for _, row := range database {
-		isAtack := row.technique == ATACK
-		if isAtack {
+		atackKeyToSearch := ATACK
+
+		hasSpecificAtack := m.Atack != 0
+		if hasSpecificAtack {
+			atackType := ATACKS_TYPES[m.AtackType].value
+			atackKeyToSearch = ATACKS[atackType][m.Atack].value
+		}
+
+		hasAtackType := m.AtackType != 0
+		if !hasSpecificAtack && hasAtackType {
+			atackKeyToSearch = ATACKS_TYPES[m.AtackType].value
+		}
+
+		isSelectedAtack := row.categories[atackKeyToSearch] && row.categories[ATACK]
+		if isSelectedAtack {
 			atacks = append(atacks, row)
 		}
 
-		isDefense := row.technique == DEFENSE
+		isDefense := row.categories[DEFENSE]
 		if isDefense {
 			defenses = append(defenses, row)
 		}
