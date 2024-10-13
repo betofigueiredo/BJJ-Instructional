@@ -155,10 +155,6 @@ type model struct {
 	DefensePick Content
 	AtackType   int
 	Atack       int
-	ChosenAtack string
-	Choice      int
-	Chosen      bool
-	Loaded      bool
 }
 
 func main() {
@@ -168,10 +164,6 @@ func main() {
 		Content{},
 		-1,
 		-1,
-		"",
-		0,
-		false,
-		false,
 	}
 	p := tea.NewProgram(initialModel)
 	if _, err := p.Run(); err != nil {
@@ -389,27 +381,6 @@ func choseAtackView(m model) string {
 	}
 
 	choices := fmt.Sprintf(replacements, questions...)
-
-	return fmt.Sprintf(tpl, choices)
-}
-
-func choicesView(m model) string {
-	c := m.Choice
-
-	tpl := "What to do today? " + ATACKS_TYPES[m.AtackType].label
-	tpl += "\n\n"
-	tpl += "%s\n\n"
-	tpl += subtleStyle.Render("j/k, up/down: select") + dotStyle +
-		subtleStyle.Render("enter: choose") + dotStyle +
-		subtleStyle.Render("q, esc: quit")
-
-	choices := fmt.Sprintf(
-		"%s\n%s\n%s\n%s",
-		checkbox("Plant carrots", c == 0),
-		checkbox("Go to the market", c == 1),
-		checkbox("Read something", c == 2),
-		checkbox("See friends", c == 3),
-	)
 
 	return fmt.Sprintf(tpl, choices)
 }
