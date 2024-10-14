@@ -3,8 +3,8 @@ package main
 var database = map[int]Content{
 	1: {
 		name:        "Kimura trap",
-		description: "",
-		url:         "https://www.instagram.com/p/C_YZK-1R8Ud/",
+		description: "Jordan Teaches Jiujitsu Youtube channel.",
+		url:         "https://www.youtube.com/watch?v=xyCakxmx-2E&ab_channel=JordanTeachesJiujitsu",
 		categories: map[string]bool{
 			ATACK:      true,
 			SUBMISSION: true,
@@ -13,8 +13,8 @@ var database = map[int]Content{
 	},
 	2: {
 		name:        "Omoplata",
-		description: "",
-		url:         "https://www.instagram.com/p/C_YZK-1R8Ud/",
+		description: "Kyra Gracie e Rayron ensinam os detalhes do Omoplata.",
+		url:         "https://www.youtube.com/watch?v=umwnACtt3sU",
 		categories: map[string]bool{
 			ATACK:      true,
 			SUBMISSION: true,
@@ -22,9 +22,9 @@ var database = map[int]Content{
 		},
 	},
 	3: {
-		name:        "Americana",
-		description: "",
-		url:         "https://www.instagram.com/p/C_YZK-1R8Ud/",
+		name:        "Americana from side control!",
+		description: "Slickest way to set up the Americana from side control! Matt Arroyo channel.",
+		url:         "https://www.youtube.com/watch?v=F7fcbptewRQ",
 		categories: map[string]bool{
 			ATACK:      true,
 			SUBMISSION: true,
@@ -32,9 +32,9 @@ var database = map[int]Content{
 		},
 	},
 	4: {
-		name:        "Passagem de guarda",
-		description: "",
-		url:         "https://www.instagram.com/p/C_YZK-1R8Ud/",
+		name:        "PASSE TODAS AS GUARDAS DA ACADEMIA",
+		description: "Canal Living From Jiu -Jitsu no Youtube.",
+		url:         "https://www.youtube.com/watch?v=zmB2PIj5cqg",
 		categories: map[string]bool{
 			ATACK:           true,
 			PROGRESSION:     true,
@@ -43,7 +43,7 @@ var database = map[int]Content{
 	},
 	5: {
 		name:        "Defesa de joelho na barriga",
-		description: "",
+		description: "Mestre @jura_bjj mostra defesa de joelho na barriga.",
 		url:         "https://www.instagram.com/p/C919xcfu_yn/",
 		categories: map[string]bool{
 			DEFENSE:        true,
