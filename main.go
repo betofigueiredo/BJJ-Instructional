@@ -116,10 +116,7 @@ const (
 var (
 	title = lipgloss.NewStyle().
 		Bold(true).
-		Foreground(lipgloss.Color("#FAFAFA")).
-		Background(lipgloss.Color("#7D56F4")).
-		PaddingRight(1).
-		PaddingLeft(1)
+		Foreground(lipgloss.Color("#cde291"))
 	atackTitle = lipgloss.NewStyle().
 			Bold(true).
 			Foreground(lipgloss.Color("#111111")).
@@ -132,8 +129,10 @@ var (
 			Background(lipgloss.Color("#ec96a7")).
 			PaddingRight(1).
 			PaddingLeft(1)
+	subtitle      = lipgloss.NewStyle().Bold(true)
+	description   = lipgloss.NewStyle().Width(70).Foreground(lipgloss.Color("236"))
 	subtleStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("241"))
-	checkboxStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("212"))
+	checkboxStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#c1dd71"))
 	dotStyle      = lipgloss.NewStyle().Foreground(lipgloss.Color("236")).Render(dotChar)
 	mainStyle     = lipgloss.NewStyle().MarginLeft(2)
 )
@@ -341,10 +340,12 @@ func resultView(m model) string {
 %v
 
 %v
+%v
 Vídeo: %v
 
 %v
 
+%v
 %v
 Vídeo: %v
 `
@@ -352,10 +353,12 @@ Vídeo: %v
 		content,
 		title.Render("Resultado:"),
 		atackTitle.Render("Ataque"),
-		m.AtackFound.name,
+		subtitle.Render(m.AtackFound.name),
+		description.Render(m.AtackFound.description),
 		m.AtackFound.url,
 		defenseTitle.Render("Defesa"),
-		m.DefenseFound.name,
+		subtitle.Render(m.DefenseFound.name),
+		description.Render(m.DefenseFound.description),
 		m.DefenseFound.url,
 	)
 	return fmt.Sprint(filledString)
@@ -363,24 +366,39 @@ Vídeo: %v
 
 func chooseAtackTypeView(m model) string {
 	options := ATACKS_TYPES
-	return buildChoices(m.AtackType, atackTitle.Render("ATAQUE"), "Qual tipo de ataque você busca?", options)
+	return buildChoices(
+		m.AtackType,
+		atackTitle.Render("ATAQUE"),
+		subtitle.Render("Qual tipo de ataque você busca?"),
+		options,
+	)
 }
 
 func chooseAtackView(m model) string {
 	options := ATACKS[ATACKS_TYPES[m.AtackType].value]
-	return buildChoices(m.Atack, atackTitle.Render("ATAQUE"), "Qual ATAQUE você busca?", options)
+	return buildChoices(
+		m.Atack,
+		atackTitle.Render("ATAQUE"),
+		subtitle.Render("Qual ATAQUE você busca?"),
+		options,
+	)
 }
 
 func chooseDefenseView(m model) string {
 	options := DEFENSES[POSITIONS]
-	return buildChoices(m.Defense, defenseTitle.Render("DEFESA"), "Defesa a partir de qual posição?", options)
+	return buildChoices(
+		m.Defense,
+		defenseTitle.Render("DEFESA"),
+		subtitle.Render("Defesa a partir de qual posição?"),
+		options,
+	)
 }
 
 func buildChoices(field int, title string, subtitle string, options []Option) string {
 	tpl := title + "\n\n" + subtitle + "\n\n%s\n\n"
-	tpl += subtleStyle.Render("j/k, up/down: select") + dotStyle +
-		subtleStyle.Render("enter: choose") + dotStyle +
-		subtleStyle.Render("q, esc: quit")
+	tpl += subtleStyle.Render("j/k, up/down: selecionar") + dotStyle +
+		subtleStyle.Render("enter: escolher") + dotStyle +
+		subtleStyle.Render("q, esc: sair")
 	idx := 0
 	replacements := ""
 	questions := []interface{}{}
