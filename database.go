@@ -98,4 +98,34 @@ var database = []Content{
 			TRIANGULO:  true,
 		},
 	},
+	{
+		name:        "Kata Gatame",
+		description: "Kata Gatame submission from mount control. Professor Philipe Della Monica.",
+		url:         "https://www.youtube.com/watch?v=qOk7rCD8r_Q",
+		categories: map[string]bool{
+			ATACK:       true,
+			SUBMISSION:  true,
+			KATA_GATAME: true,
+		},
+	},
+	{
+		name:        "Estrangulamento partindo do 100 kilos",
+		description: "Estrangulamento partindo do 100 kilos com braço enrolado. Fabio Gurgel.",
+		url:         "https://www.youtube.com/watch?v=zZhyQve2KTU",
+		categories: map[string]bool{
+			ATACK:           true,
+			SUBMISSION:      true,
+			ESTRANGULAMENTO: true,
+		},
+	},
+	{
+		name:        "Estrangulamento dos 100kg",
+		description: "Jiu Jitsu para Iniciantes - Estrangulamento dos 100kg (imobilização lateral).",
+		url:         "https://www.youtube.com/watch?v=4qpBOecIH0M",
+		categories: map[string]bool{
+			ATACK:           true,
+			SUBMISSION:      true,
+			ESTRANGULAMENTO: true,
+		},
+	},
 }
