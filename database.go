@@ -1,7 +1,7 @@
 package main
 
-var database = map[int]Content{
-	1: {
+var database = []Content{
+	{
 		name:        "Kimura trap",
 		description: "Jordan Teaches Jiujitsu Youtube channel.",
 		url:         "https://www.youtube.com/watch?v=xyCakxmx-2E&ab_channel=JordanTeachesJiujitsu",
@@ -11,7 +11,7 @@ var database = map[int]Content{
 			KIMURA:     true,
 		},
 	},
-	2: {
+	{
 		name:        "Omoplata",
 		description: "Kyra Gracie e Rayron ensinam os detalhes do Omoplata.",
 		url:         "https://www.youtube.com/watch?v=umwnACtt3sU",
@@ -21,7 +21,7 @@ var database = map[int]Content{
 			OMOPLATA:   true,
 		},
 	},
-	3: {
+	{
 		name:        "Americana from side control!",
 		description: "Slickest way to set up the Americana from side control! Matt Arroyo channel.",
 		url:         "https://www.youtube.com/watch?v=F7fcbptewRQ",
@@ -31,7 +31,7 @@ var database = map[int]Content{
 			AMERICANA:  true,
 		},
 	},
-	4: {
+	{
 		name:        "PASSE TODAS AS GUARDAS DA ACADEMIA",
 		description: "Canal Living From Jiu -Jitsu no Youtube.",
 		url:         "https://www.youtube.com/watch?v=zmB2PIj5cqg",
@@ -41,7 +41,7 @@ var database = map[int]Content{
 			PASSAGEM_GUARDA: true,
 		},
 	},
-	5: {
+	{
 		name:        "Defesa de joelho na barriga",
 		description: "Mestre @jura_bjj mostra defesa de joelho na barriga.",
 		url:         "https://www.instagram.com/p/C919xcfu_yn/",
@@ -50,7 +50,7 @@ var database = map[int]Content{
 			JOELHO_BARRIGA: true,
 		},
 	},
-	6: {
+	{
 		name:        "Saída dos cem quilos",
 		description: "João Miyao analisa essa saída dos cem kgs que Luke Stewart fez na lenda Andre Galvão em uma luta de MMA.",
 		url:         "https://www.instagram.com/p/C_vhmY0JrZC/",
@@ -59,7 +59,7 @@ var database = map[int]Content{
 			CEM_QUILOS: true,
 		},
 	},
-	7: {
+	{
 		name:        "Defesa do triângulo",
 		description: "Renzo Gracie mostra defesa do triângulo.",
 		url:         "https://www.instagram.com/p/C1VCimQPk_P/",
@@ -68,7 +68,7 @@ var database = map[int]Content{
 			TRIANGULO: true,
 		},
 	},
-	8: {
+	{
 		name:        "72 Kimura Trap Techniques",
 		description: "72 Kimura Trap Techniques In Just 22 Minutes by Jason Scully - BJJ Grappling - Kimura Trap System.",
 		url:         "https://www.youtube.com/watch?v=iiF0S-B_81o",
@@ -76,6 +76,26 @@ var database = map[int]Content{
 			ATACK:      true,
 			SUBMISSION: true,
 			KIMURA:     true,
+		},
+	},
+	{
+		name:        "Armlock do triângulo",
+		description: "Roger Gracie ensina armlock a partir do triângulo, aula 1!",
+		url:         "https://www.youtube.com/watch?v=3TJDLHO2HFM",
+		categories: map[string]bool{
+			ATACK:      true,
+			SUBMISSION: true,
+			ARMLOCK:    true,
+		},
+	},
+	{
+		name:        "Triângulo",
+		description: "Como ter um triângulo perfeito. Canal @gabrielsouzag_.",
+		url:         "https://www.youtube.com/shorts/1thpGd8axQM",
+		categories: map[string]bool{
+			ATACK:      true,
+			SUBMISSION: true,
+			TRIANGULO:  true,
 		},
 	},
 }
