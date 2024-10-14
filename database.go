@@ -128,4 +128,24 @@ var database = []Content{
 			ESTRANGULAMENTO: true,
 		},
 	},
+	{
+		name:        "Estrangulamento dos 100kilos",
+		description: "Saiba estrangular quando a pessoa está saindo dos 100kilos! Roger Gracie.",
+		url:         "https://www.youtube.com/watch?v=RJXTRXXotw0",
+		categories: map[string]bool{
+			ATACK:           true,
+			SUBMISSION:      true,
+			ESTRANGULAMENTO: true,
+		},
+	},
+	{
+		name:        "Chave de pé reta",
+		description: "Roger Gracie ensina detalhe da chave de pé!",
+		url:         "https://www.youtube.com/watch?v=q6NmxzwLbPc",
+		categories: map[string]bool{
+			ATACK:      true,
+			SUBMISSION: true,
+			ATAQUE_PE:  true,
+		},
+	},
 }
