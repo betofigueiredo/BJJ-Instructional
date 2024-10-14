@@ -130,8 +130,8 @@ var (
 			PaddingRight(1).
 			PaddingLeft(1)
 	subtitle      = lipgloss.NewStyle().Bold(true)
-	description   = lipgloss.NewStyle().Width(70).Foreground(lipgloss.Color("236"))
-	subtleStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("241"))
+	description   = lipgloss.NewStyle().Width(70).Foreground(lipgloss.Color("#B1B1B1"))
+	subtleStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#B1B1B1"))
 	checkboxStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#c1dd71"))
 	dotStyle      = lipgloss.NewStyle().Foreground(lipgloss.Color("236")).Render(dotChar)
 	mainStyle     = lipgloss.NewStyle().MarginLeft(2)
@@ -351,7 +351,7 @@ Vídeo: %v
 `
 	filledString := fmt.Sprintf(
 		content,
-		title.Render("Resultado:"),
+		title.Render("Resultados:"),
 		atackTitle.Render("Ataque"),
 		subtitle.Render(m.AtackFound.name),
 		description.Render(m.AtackFound.description),
