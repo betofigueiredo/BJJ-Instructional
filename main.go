@@ -38,6 +38,7 @@ const (
 	ATAQUE_PE       = "ATAQUE_PE"
 
 	// progressions
+	QUEDA           = "QUEDA"
 	RASPAGEM        = "RASPAGEM"
 	ABERTURA_GUARDA = "ABERTURA_GUARDA"
 	PASSAGEM_GUARDA = "PASSAGEM_GUARDA"
@@ -81,6 +82,7 @@ var ATACKS = map[string][]Option{
 	},
 	PROGRESSIONS: {
 		{label: "Todas as opções", value: ""},
+		{label: "Queda", value: QUEDA},
 		{label: "Raspagem", value: RASPAGEM},
 		{label: "Abertura de guarda", value: ABERTURA_GUARDA},
 		{label: "Passagem de guarda", value: PASSAGEM_GUARDA},
@@ -96,13 +98,16 @@ var DEFENSES = map[string][]Option{
 		{label: "Costas", value: COSTAS},
 		{label: "Cem quilos", value: CEM_QUILOS},
 		{label: "Quatro apoios", value: QUATRO_APOIOS},
+		{label: "Joelho na barriga", value: JOELHO_BARRIGA},
+		{label: "Triângulo", value: TRIANGULO},
 	},
 }
 
 type Content struct {
-	name       string
-	url        string
-	categories map[string]bool
+	name        string
+	description string
+	url         string
+	categories  map[string]bool
 }
 
 const (
@@ -236,8 +241,15 @@ func findResults(m model) model {
 			atacks = append(atacks, row)
 		}
 
-		isDefense := row.categories[DEFENSE]
-		if isDefense {
+		defenseKeyToSearch := DEFENSE
+
+		hasSpecificDefense := m.Defense != 0
+		if hasSpecificDefense {
+			defenseKeyToSearch = DEFENSES[POSITIONS][m.Defense].value
+		}
+
+		isSelectedDefense := row.categories[defenseKeyToSearch]
+		if isSelectedDefense {
 			defenses = append(defenses, row)
 		}
 	}
