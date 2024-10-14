@@ -147,12 +147,12 @@ var VIEWS = map[string]string{
 }
 
 type model struct {
-	CurrentView string
-	AtackPick   Content
-	DefensePick Content
-	AtackType   int
-	Atack       int
-	Defense     int
+	CurrentView  string
+	AtackFound   Content
+	DefenseFound Content
+	AtackType    int
+	Atack        int
+	Defense      int
 }
 
 func main() {
@@ -263,8 +263,8 @@ func findResults(m model) model {
 		defensePick = defenses[rand.Intn(len(defenses))]
 	}
 
-	m.AtackPick = atackPick
-	m.DefensePick = defensePick
+	m.AtackFound = atackPick
+	m.DefenseFound = defensePick
 
 	return m
 }
@@ -352,11 +352,11 @@ Vídeo: %v
 		content,
 		title.Render("Resultado:"),
 		atackTitle.Render("Ataque"),
-		m.AtackPick.name,
-		m.AtackPick.url,
+		m.AtackFound.name,
+		m.AtackFound.url,
 		defenseTitle.Render("Defesa"),
-		m.DefensePick.name,
-		m.DefensePick.url,
+		m.DefenseFound.name,
+		m.DefenseFound.url,
 	)
 	return fmt.Sprint(filledString)
 }
