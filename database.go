@@ -68,4 +68,14 @@ var database = map[int]Content{
 			TRIANGULO: true,
 		},
 	},
+	8: {
+		name:        "72 Kimura Trap Techniques",
+		description: "72 Kimura Trap Techniques In Just 22 Minutes by Jason Scully - BJJ Grappling - Kimura Trap System.",
+		url:         "https://www.youtube.com/watch?v=iiF0S-B_81o",
+		categories: map[string]bool{
+			ATACK:      true,
+			SUBMISSION: true,
+			KIMURA:     true,
+		},
+	},
 }
