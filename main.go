@@ -32,7 +32,7 @@ const (
 	OMOPLATA        = "OMOPLATA"
 	TRIANGULO       = "TRIANGULO"
 	ARMLOCK         = "ARMLOCK"
-	KATAGATAME      = "KATAGATAME"
+	KATA_GATAME     = "KATA_GATAME"
 	ESTRANGULAMENTO = "ESTRANGULAMENTO"
 	ATAQUE_PE       = "ATAQUE_PE"
 
@@ -75,7 +75,7 @@ var ATACKS = map[string][]Option{
 		{label: "Omoplata", value: OMOPLATA},
 		{label: "Triângulo", value: TRIANGULO},
 		{label: "Armlock", value: ARMLOCK},
-		{label: "Katagatame", value: KATAGATAME},
+		{label: "Kata gatame", value: KATA_GATAME},
 		{label: "Estrangulamento", value: ESTRANGULAMENTO},
 		{label: "Ataque de pé", value: ATAQUE_PE},
 	},
