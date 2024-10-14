@@ -191,7 +191,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return updateChooseDefense(msg, m)
 	case VIEWS[LOADING]:
 		m.CurrentView = VIEWS[RESULT]
-		return m, nil
+		return m, tea.Quit
 	default:
 		return m, nil
 	}
