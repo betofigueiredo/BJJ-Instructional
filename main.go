@@ -11,12 +11,11 @@ import (
 
 const (
 	// views
-	LOADING               = "LOADING"
-	RESULT                = "RESULT"
-	CHOOSE_ATACK_TYPE     = "CHOOSE_ATACK_TYPE"
-	CHOOSE_ATACK          = "CHOOSE_ATACK"
-	CHOOSE_ATACK_POSITION = "CHOOSE_ATACK_POSITION"
-	CHOOSE_DEFENSE        = "CHOOSE_DEFENSE"
+	LOADING           = "LOADING"
+	RESULT            = "RESULT"
+	CHOOSE_ATACK_TYPE = "CHOOSE_ATACK_TYPE"
+	CHOOSE_ATACK      = "CHOOSE_ATACK"
+	CHOOSE_DEFENSE    = "CHOOSE_DEFENSE"
 
 	// default
 	ATACK        = "ATACK"
@@ -170,7 +169,7 @@ func (m model) Init() tea.Cmd {
 
 func forceUpdate(msg tea.Msg) tea.Cmd {
 	return func() tea.Msg {
-		time.Sleep(800 * time.Millisecond)
+		time.Sleep(600 * time.Millisecond)
 		return msg
 	}
 }
@@ -273,77 +272,61 @@ func findResults(m model) model {
 // ANCHOR: Sub-update functions
 
 func updateChooseAtackType(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
-	switch msg := msg.(type) {
-	case tea.KeyMsg:
-		max := len(ATACKS_TYPES) - 1
-		switch msg.String() {
-		case "j", "down":
-			m.AtackType++
-			if m.AtackType > max {
-				m.AtackType = max
-			}
-		case "k", "up":
-			m.AtackType--
-			if m.AtackType < 0 {
-				m.AtackType = 0
-			}
-		case "enter":
-			if m.AtackType == 0 {
-				m.CurrentView = VIEWS[CHOOSE_DEFENSE]
-			} else {
-				m.CurrentView = VIEWS[CHOOSE_ATACK]
-			}
-			return m, nil
-		}
-	}
-	return m, nil
+	return handleChoices(msg, m, ATACKS_TYPES)
 }
 
 func updateChooseAtack(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
-	switch msg := msg.(type) {
-	case tea.KeyMsg:
-		options := ATACKS[ATACKS_TYPES[m.AtackType].value]
-		max := len(options) - 1
-		switch msg.String() {
-		case "j", "down":
-			m.Atack++
-			if m.Atack > max {
-				m.Atack = max
-			}
-		case "k", "up":
-			m.Atack--
-			if m.Atack < 0 {
-				m.Atack = 0
-			}
-		case "enter":
-			m.CurrentView = VIEWS[CHOOSE_DEFENSE]
-			return m, nil
-		}
-	}
-
-	return m, nil
+	return handleChoices(msg, m, ATACKS[ATACKS_TYPES[m.AtackType].value])
 }
 
 func updateChooseDefense(msg tea.Msg, m model) (tea.Model, tea.Cmd) {
+	return handleChoices(msg, m, DEFENSES[POSITIONS])
+}
+
+func handleChoices(msg tea.Msg, m model, options []Option) (tea.Model, tea.Cmd) {
+	field := &m.AtackType
+	switch m.CurrentView {
+	case VIEWS[CHOOSE_ATACK_TYPE]:
+		field = &m.AtackType
+	case VIEWS[CHOOSE_ATACK]:
+		field = &m.Atack
+	case VIEWS[CHOOSE_DEFENSE]:
+		field = &m.Defense
+	}
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
-		options := DEFENSES[POSITIONS]
 		max := len(options) - 1
 		switch msg.String() {
 		case "j", "down":
-			m.Defense++
-			if m.Defense > max {
-				m.Defense = max
+			*field++
+			if *field > max {
+				*field = max
 			}
 		case "k", "up":
-			m.Defense--
-			if m.Defense < 0 {
-				m.Defense = 0
+			*field--
+			if *field < 0 {
+				*field = 0
 			}
 		case "enter":
-			m = findResults(m)
-			m.CurrentView = VIEWS[LOADING]
-			return m, forceUpdate(msg)
+			switch m.CurrentView {
+			case VIEWS[CHOOSE_ATACK_TYPE]:
+				if m.AtackType == 0 {
+					m.CurrentView = VIEWS[CHOOSE_DEFENSE]
+				} else {
+					m.CurrentView = VIEWS[CHOOSE_ATACK]
+				}
+				return m, nil
+			case VIEWS[CHOOSE_ATACK]:
+				m.CurrentView = VIEWS[CHOOSE_DEFENSE]
+				return m, nil
+			case VIEWS[CHOOSE_DEFENSE]:
+				m = findResults(m)
+				m.CurrentView = VIEWS[LOADING]
+				return m, forceUpdate(msg)
+			default:
+				return m, nil
+			}
 		}
 	}
 	return m, nil
