@@ -148,4 +148,14 @@ var database = []Content{
 			ATAQUE_PE:  true,
 		},
 	},
+	{
+		name:        "Chave de pé",
+		description: "FREE Ankle Lock Instructional... ADVANCED Locks Included. Jordan Teaches Jiujitsu.",
+		url:         "https://www.youtube.com/watch?v=rTUFu5VJQYw",
+		categories: map[string]bool{
+			ATACK:      true,
+			SUBMISSION: true,
+			ATAQUE_PE:  true,
+		},
+	},
 }
